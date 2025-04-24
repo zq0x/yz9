@@ -948,15 +948,15 @@ async def fnredis(request: Request):
             logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] trying to get docker vllm container ...')
             res_container_list = client.containers.list(all=True)
             
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list: {res_container_list}')
-            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list: {res_container_list}')
+            # print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list: {res_container_list}')
+            # logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list: {res_container_list}')
             
             
             
             res_container_list_attr = [container.attrs for container in res_container_list]
             
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list_attr: {res_container_list_attr}')
-            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list_attr: {res_container_list_attr}')
+            # print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list_attr: {res_container_list_attr}')
+            # logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list_attr: {res_container_list_attr}')
             
         
             docker_container_list_vllm_running = [c for c in res_container_list_attr if c["State"]["Status"] == "running" and c["Name"] not in [f'/container_redis',f'/container_backend', f'/container_frontend', f'/container_audio']]
