@@ -1106,9 +1106,10 @@ def gpu_to_pd():
             MEM_TOTAL = float(MEM_TOTAL) + float(current_gpu_mem_total.split()[0])
             MEM_USED = float(MEM_USED) + float(current_gpu_mem_used.split()[0])
             MEM_FREE = float(MEM_FREE) + float(current_gpu_mem_free.split()[0])
-            print(f'MMMMMMMMMMMMMMMMM MEM 1')
-            update_mem(gpu_info.get("mem_util", "0"))
-            print(f'MMMMMMMMMMMMMMMMM MEM 2')
+            current_mem = gpu_info.get("mem_util", "0")
+            print(f'MMMMMMMMMMMMMMMMM 1 current_mem {current_mem}')
+            update_mem(current_mem)
+            print(f'MMMMMMMMMMMMMMMMM 2 current_mem {current_mem}')
             # mmmmmmmm
             rows.append({                                
                 "name": gpu_info.get("name", "0"),
@@ -1553,6 +1554,7 @@ def update_vllms_list():
 
     
 def update_mem(new_mem):
+    print(f' xxxxxxxxxXXXXXXXXXXXXXXXXXXXXxxxxxxxx 1 new_mem: {new_mem}')
     test_call_update2 = {
                 "db_name": REDIS_DB_VLLM,
                 "method": "update",
@@ -1561,8 +1563,10 @@ def update_mem(new_mem):
                 "filter_val": "3",
                 "update_val": new_mem
                 
-            }
+    }
+    print(f' xxxxxxxxxXXXXXXXXXXXXXXXXXXXXxxxxxxxx 2 test_call_update2: {test_call_update2}')
     res_redis = redis_connection(**test_call_update2)
+    print(f' xxxxxxxxxXXXXXXXXXXXXXXXXXXXXxxxxxxxx 3 res_redis: {res_redis}')
     return res_redis
 
     
@@ -2605,7 +2609,7 @@ def create_app():
             with gr.TabItem("Download", id=0):
                 with gr.Row(visible=True) as row_vllm_download:
                     with gr.Column(scale=4):
-                        download_status = gr.Textbox(show_label=False, visible=False)
+                        download_status = gr.Textbox(placeholder="No model selected", show_label=False, visible=True)
                 
                     with gr.Column(scale=1):                
                         with gr.Row(visible=True) as row_download:
