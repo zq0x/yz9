@@ -2124,7 +2124,7 @@ def toggle_test_vllms(req_id):
 
 
 def create_app():
-    with gr.Blocks() as app:
+    with gr.Blocks(css="footer{display:none !important}") as app:
         
         
         
@@ -2942,7 +2942,7 @@ def create_app():
         
         
        
-        load_btn = gr.Button("Load into vLLM (port: 1370)", visible=True)
+        # load_btn = gr.Button("Load into vLLM (port: 1370)", visible=True)
 
         
 
@@ -2952,52 +2952,6 @@ def create_app():
 
 
 
-
-
-        test_vllm_radio_out = gr.Textbox(label="test_vllm_radio_out")
-
-        # aaaa2
-        test_vllms_radio = gr.Radio(["container_vllm_xoo", "container_vllm_oai", "Create New"], value="container_vllm_oai", show_label=False, info="Select a vllms_prompt or create a new one. Where?")
-
-        kekt = gr.Textbox(label="kekt")
-        
-
-
-        for container in test_vllms_list_running:
-
-            
-            test_vllm_id = gr.Textbox(value=container["id"], elem_classes="table-cell", label="test_vllm_id")
-            
-            test_vllm_status = gr.Textbox(value=container["State"]["Status"], elem_classes="table-cell", label="test_vllm_status")
-                                
-            test_vllm_ts = gr.Textbox(value=container["ts"], elem_classes="table-cell", label="test_vllm_ts")
-            
-            
-
-
-        # test_vllms_radio.change(
-        #     toggle_test_vllms,
-        #     test_vllms_radio,
-        #     test_vllm_radio_out
-        # )
-
-        # vllms=gr.Radio(["vLLM1", "vLLM2", "Create New"], value="vLLM1", show_label=False, info="Select a vLLM or create a new one. Where?")
-        # vllms.change(
-        #     toggle_vllm_load_create,
-        #     vllms,
-        #     [acc_load, vllm_load_actions, acc_create, vllm_create_actions]
-        # )
-
-        # vllmsprompt.change(
-        #     toggle_vllm_prompt,
-        #     vllmsprompt,
-        #     testtext
-        # )
-
-
-
-        
-        
         
         
         
@@ -3256,13 +3210,6 @@ def create_app():
         
         
         
-        # aaaa label info evtl oder info
-        test_vllms_radio.change(
-            toggle_test_vllms,
-            test_vllms_radio,
-            [test_vllms_radio,test_vllm_radio_out] #choices und ts
-        )
-
                 
 
 
