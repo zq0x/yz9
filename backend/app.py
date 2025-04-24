@@ -943,9 +943,6 @@ async def fnredis(request: Request):
         logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] req_data["method"] > {req_data["method"]}')
         
         
-        # if req_data["method"] == "list":
-        #     res_container_list = client.containers.list(all=True)
-        #     return JSONResponse([container.attrs for container in res_container_list])
         if req_data["method"] == "test":
             print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] req_data["method"] == "test"')
             logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] req_data["method"] == "test"')

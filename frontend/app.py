@@ -181,7 +181,7 @@ def redis_api(*req_component,**req_dict):
         if req_dict["req_dict"]["method"] == "test":
             print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] ["method"] == "test"')
             
-            response = requests.post(DOCKER_API_URL, json={"method":req_dict["req_dict"]["method"]})
+            response = requests.post(REDIS_API_URL, json={"method":req_dict["req_dict"]["method"]})
             print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] response: {response}')
             
             res_json = response.json()
