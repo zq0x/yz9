@@ -944,10 +944,44 @@ async def fnredis(request: Request):
         
         
         if req_data["method"] == "test":
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] req_data["method"] == "test"')
-            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] req_data["method"] == "test"')
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] trying to get docker vllm container ...')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] trying to get docker vllm container ...')
+            res_container_list = client.containers.list(all=True)
+            
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list: {res_container_list}')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list: {res_container_list}')
+            
+            
+            
+            res_container_list_attr = [container.attrs for container in res_container_list]
+            
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list_attr: {res_container_list_attr}')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] res_container_list_attr: {res_container_list_attr}')
+            
+        
+            docker_container_list_vllm_running = [c for c in res_container_list_attr if c["State"]["Status"] == "running" and c["Name"] not in [f'/container_redis',f'/container_backend', f'/container_frontend', f'/container_audio']]
+            docker_container_list_vllm_not_running = [c for c in res_container_list_attr if c["State"]["Status"] != "running" and c["Name"] not in [f'/container_redis',f'/container_backend', f'/container_frontend', f'/container_audio']]
+            
+                
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running: {docker_container_list_vllm_running}')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running: {docker_container_list_vllm_running}')
+            
+            
+                            
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_not_running: {docker_container_list_vllm_not_running}')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_not_running: {docker_container_list_vllm_not_running}')
+            
+            
+                        
+                            
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running[0]["Name"]: {docker_container_list_vllm_running[0]["Name"]}')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running[0]["Name"]: {docker_container_list_vllm_running[0]["Name"]}')
+            
+            
+            
+            
             vllm1 = {
-                "container_name": "vllm1",
+                "container_name": docker_container_list_vllm_running[0]["Name"],
                 "uid": "123123",
                 "status": "running",
                 "State": {
@@ -1048,76 +1082,7 @@ async def fndocker(request: Request):
         req_data = await request.json()
         print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [docker] req_data > {req_data}')
         logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [docker] req_data > {req_data}')
-        
-        if req_data["method"] == "test":
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] req_data["method"] == "test"')
-            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] req_data["method"] == "test"')
-            vllm1 = {
-                "container_name": "vllm1",
-                "uid": "123123",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
 
-            vllm2 = {
-                "container_name": "vllm2",
-                "uid": "42124124",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
-
-            vllm3 = {
-                "container_name": "vllm3",
-                "uid": "523235235",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
-
-            vllm4 = {
-                "container_name": "vllm4",
-                "uid": "52352352",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
-
-            vllm5 = {
-                "container_name": "vllm5",
-                "uid": "74545",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
-            res_data = [vllm1,vllm2,vllm3,vllm4,vllm5]
-            return JSONResponse({"result_status": 200, "result_data": res_data})
         if req_data["method"] == "generate":
             print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [docker] generate >>>>>>>>>>>')
             logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [docker] generate >>>>>>>>>>> ')
@@ -1233,7 +1198,8 @@ async def fndocker(request: Request):
             if req_data["vllmcontainer"] == "container_vllm_oai":
                 return JSONResponse({"result_status": 500, "result_data": f'vllm/vllm-openai:latest load not supported!'})
             
-            if req_data["vllmcontainer"] == "container_vllm_xoo":                
+            # if req_data["vllmcontainer"] == "container_vllm_xoo":
+            if req_data["vllmcontainer"]:
                 print(f'  * ! * ! *  starting container_vllm_xoo ...')
                 req_container = client.containers.get(req_data["vllmcontainer"])
                 print(f'  * ! * ! *  is started? [{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] ...')
