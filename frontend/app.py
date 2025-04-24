@@ -1488,14 +1488,14 @@ test_call_save_vllm3 = {
                 "db_name": REDIS_DB_VLLM,
                 "method": "save",
                 "select": "all",
-                "data": res_vllms[2]
+                "data": res_vllms[0]
             }
 print(f'__________________________________ save ___________________________________')
 print(f'______ calling mit res_vllms[0]: {res_vllms[0]}')
 redis_connection(**test_call_save_vllm1)
 print(f'______ calling mit res_vllms[1]: {res_vllms[1]}')
 redis_connection(**test_call_save_vllm2)
-print(f'______ calling mit res_vllms[2]: {res_vllms[2]}')
+print(f'______ calling mit res_vllms[0]: {res_vllms[0]}')
 redis_connection(**test_call_save_vllm3)
 print(f'________________________________________________________________________')
 print(f'')
@@ -1523,18 +1523,18 @@ def update_vllms_list():
     return res_redis
 
     
-def add_vllm4():
-    print(f'trying to uadd_vllm4 ...')
-    res_redis = redis_connection(**test_call_save_vllm4)
-    print(f'added add_vllm4! {res_redis}')
-    return res_redis
+# def add_vllm4():
+#     print(f'trying to uadd_vllm4 ...')
+#     res_redis = redis_connection(**test_call_save_vllm4)
+#     print(f'added add_vllm4! {res_redis}')
+#     return res_redis
 
     
-def add_vllm5():
-    print(f'trying to uadd_vllm5 ...')
-    res_redis = redis_connection(**test_call_save_vllm5)
-    print(f'added add_vllm5! {res_redis}')
-    return res_redis
+# def add_vllm5():
+#     print(f'trying to uadd_vllm5 ...')
+#     res_redis = redis_connection(**test_call_save_vllm5)
+#     print(f'added add_vllm5! {res_redis}')
+#     return res_redis
 
 
 
@@ -2458,19 +2458,19 @@ def create_app():
 
     
         
-        btn_add_vllm4 = gr.Button("add vllm4")
-        btn_add_vllm4.click(
-            add_vllm4,
-            None,
-            [container_state]
-        )
+        # btn_add_vllm4 = gr.Button("add vllm4")
+        # btn_add_vllm4.click(
+        #     add_vllm4,
+        #     None,
+        #     [container_state]
+        # )
         
-        btn_add_vllm5 = gr.Button("add vllm5")
-        btn_add_vllm5.click(
-            add_vllm5,
-            None,
-            [container_state]
-        )
+        # btn_add_vllm5 = gr.Button("add vllm5")
+        # btn_add_vllm5.click(
+        #     add_vllm5,
+        #     None,
+        #     [container_state]
+        # )
         
         
         vllm_radio_timer = gr.Timer(5,active=True)
