@@ -1548,24 +1548,27 @@ def add_vllm5():
 
 def selected_vllm_info(selected_radio):
     global res_vllms
-    print(f'got value: {selected_radio}')
+    print(f'~~~~~~ [selected_vllm_info] REDIS_DB_VLLM: {REDIS_DB_VLLM}')
+    print(f'~~~~~~ [selected_vllm_info] got selected_radio: {selected_radio}')
 
-    print(f'trying to get vllm info')
     req_vllm = {
-        "db_name": res_vllms[0]["container_name"],
+        "db_name": REDIS_DB_VLLM,
         "method": "get",
         "select": "filter",
         "filter_key": "container_name",
         "filter_val": selected_radio,
     }
+    print(f'~~~~~~ [selected_vllm_info] got selected_radio: {selected_radio}')
+    
     
     res_vllm = redis_connection(**req_vllm)
-    print(f'got vllm info! returning ... {res_vllm}')
-    print(f'res_vllm[0]["uid"] {res_vllm[0]["uid"]} \n\n')
+    print(f'~~~~~~ [selected_vllm_info] got res_vllm: {res_vllm}')
+    print(f'~~~~~~ [selected_vllm_info] got res_vllm[0]: {res_vllm[0]}')
     
 
+
         
-    return f'{res_vllm[0]["uid"]}', f'{selected_radio}'
+    return f'{res_vllm}', f'{selected_radio}'
 
 
 
