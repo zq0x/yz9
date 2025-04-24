@@ -990,7 +990,7 @@ async def fnredis(request: Request):
                 logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] container["Name"]: {container["Name"]}')
                 current_vllm = {
                     "container_name": container["Name"],
-                    "uid": "123123",
+                    "uid": container["Id"][:12],
                     "status": "running",
                     "State": {
                         "Status": "running"
