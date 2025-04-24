@@ -68,12 +68,12 @@ error_vllm = {
         "Status": "offline"
     },
     "gpu": {
-        "mem": "nuh uh%"
+        "mem": "nuh uh 0%"
     },
     "ts": "0"
 }
 
-error_vllm = {
+error_vllm2 = {
     "container_name": "error2",
     "uid": "1111111111111",
     "status": "offline",
@@ -81,15 +81,52 @@ error_vllm = {
         "Status": "offline"
     },
     "gpu": {
-        "mem": "nuh uh%"
+        "mem": "nuh uh 1%"
     },
     "ts": "0"
 }
 
 
-res_vllms = [error_vllm,error_vllm,error_vllm,error_vllm,error_vllm]
+error_vllm3 = {
+    "container_name": "error3",
+    "uid": "222222222222",
+    "status": "offline",
+    "State": {
+        "Status": "offline"
+    },
+    "gpu": {
+        "mem": "nuh uh 2%"
+    },
+    "ts": "0"
+}
 
 
+error_vllm4 = {
+    "container_name": "error4",
+    "uid": "3333333333",
+    "status": "offline",
+    "State": {
+        "Status": "offline"
+    },
+    "gpu": {
+        "mem": "nuh uh 3%"
+    },
+    "ts": "0"
+}
+
+
+error_vllm5 = {
+    "container_name": "error5",
+    "uid": "4444444444",
+    "status": "offline",
+    "State": {
+        "Status": "offline"
+    },
+    "gpu": {
+        "mem": "nuh uh 4%"
+    },
+    "ts": "0"
+}
 
 
 try:
@@ -104,6 +141,92 @@ except Exception as e:
 
 
 
+
+def redis_api(*req_component,**req_dict):
+    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] START')
+    global res_vllms
+    # put in default later
+    error_vllm = {
+        "container_name": "error",
+        "uid": "0000000000",
+        "status": "offline",
+        "State": {
+            "Status": "offline"
+        },
+        "gpu": {
+            "mem": "nuh uh%"
+        },
+        "ts": "0"
+    }
+    try:
+        global REDIS_API_URL
+        
+        if not req_dict:
+            print(f' %%%%%%%%%%%% [redis_api]: Error: no req_dict')
+            return [error_vllm]
+        else:
+            print(f' %%%%%%%%%%%% [redis_api]: req_dict: {req_dict}')
+            print(f' %%%%%%%%%%%% [redis_api]: req_dict["req_dict"]: {req_dict["req_dict"]}')
+            print(f' %%%%%%%%%%%% [redis_api]: req_dict["req_dict"]["method"]: {req_dict["req_dict"]["method"]}')
+        
+        print(f' %%%%%%%%%%%% [redis_api]: req_component: {req_component}')
+        
+        if not req_dict["req_dict"]["method"]:
+            print(f' %%%%%%%%%%%% [redis_api]: Error: no method')
+            return [error_vllm]
+        
+        
+        print(f' %%%%%%%%%%%% [redis_api]: VOR REQUESTINNG')
+        
+        if req_dict["req_dict"]["method"] == "test":
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] ["method"] == "test"')
+            
+            response = requests.post(DOCKER_API_URL, json={"method":req_dict["req_dict"]["method"]})
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] response: {response}')
+            
+            res_json = response.json()
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] res_json: {res_json}')
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] res_json["result_status"]: {res_json["result_status"]}')
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] res_json["result_data"]: {res_json["result_data"]}')
+
+            return res_json["result_data"]
+        
+    except Exception as e:
+        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [redis_api] {e}')
+        return [error_vllm]
+
+
+
+
+
+backend_url = f'http://container_backend:{os.getenv("BACKEND_PORT")}/docker'
+print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ FRONTEND WAITING FOR BACKEND BOOT TO GET VLLMS')
+print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ querying ...')
+res_backend = wait_for_backend(backend_url)
+print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ true or no?  res_backend: {res_backend}')
+
+res_vllms = []
+if wait_for_backend(backend_url):
+    print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ ok is true... trying to get vllms ...')
+
+    req_test = {
+        "method": "test"
+    }
+
+    
+    print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ 1')
+    res_vllms = redis_api("test", req_dict=req_test)
+    print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ 2')
+    print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ OK GOT res_vllms: {res_vllms}')
+    print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ OK GOT res_vllms[0]: {res_vllms[0]}')
+    print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ OK GOT res_vllms[1]: {res_vllms[1]}')
+
+    print(f' ~~~~~~~~~~~~~~~~~~~~~~~~ 3')
+
+
+
+else:    
+    print(f' ~~~~~~~~~~~ ERRROR ~~~~~~~~~~~~~ 4 responded False')
 
 
 
@@ -212,59 +335,6 @@ def get_disk_data():
         return e
 
 
-
-def redis_api(*req_component,**req_dict):
-    print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] START')
-    global res_vllms
-    # put in default later
-    error_vllm = {
-        "container_name": "error",
-        "uid": "0000000000",
-        "status": "offline",
-        "State": {
-            "Status": "offline"
-        },
-        "gpu": {
-            "mem": "nuh uh%"
-        },
-        "ts": "0"
-    }
-    try:
-        global REDIS_API_URL
-        
-        if not req_dict:
-            print(f' %%%%%%%%%%%% [redis_api]: Error: no req_dict')
-            return [error_vllm]
-        else:
-            print(f' %%%%%%%%%%%% [redis_api]: req_dict: {req_dict}')
-            print(f' %%%%%%%%%%%% [redis_api]: req_dict["req_dict"]: {req_dict["req_dict"]}')
-            print(f' %%%%%%%%%%%% [redis_api]: req_dict["req_dict"]["method"]: {req_dict["req_dict"]["method"]}')
-        
-        print(f' %%%%%%%%%%%% [redis_api]: req_component: {req_component}')
-        
-        if not req_dict["req_dict"]["method"]:
-            print(f' %%%%%%%%%%%% [redis_api]: Error: no method')
-            return [error_vllm]
-        
-        
-        print(f' %%%%%%%%%%%% [redis_api]: VOR REQUESTINNG')
-        
-        if req_dict["req_dict"]["method"] == "test":
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] ["method"] == "test"')
-            
-            response = requests.post(DOCKER_API_URL, json={"method":req_dict["req_dict"]["method"]})
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] response: {response}')
-            
-            res_json = response.json()
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] res_json: {res_json}')
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] res_json["result_status"]: {res_json["result_status"]}')
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] %%%%%%%%%%%% [redis] res_json["result_data"]: {res_json["result_data"]}')
-
-            return res_json["result_data"]
-        
-    except Exception as e:
-        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [redis_api] {e}')
-        return [error_vllm]
 
 
 
@@ -2561,7 +2631,7 @@ def create_app():
 
         
         
-            with gr.TabItem("Automatic Speech Recognition", id=4):
+            with gr.TabItem("Audio", id=4):
                 with gr.Row(visible=True) as row_vllm_audio:
                     with gr.Column(scale=2):
                         with gr.Accordion(("Automatic Speech Recognition"), open=True, visible=True) as acc_audio:
