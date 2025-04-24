@@ -1279,19 +1279,19 @@ def redis_connection(**kwargs):
 
 
 
-test_call_save_vllm4 = {
-                "db_name": REDIS_DB_VLLM,
-                "method": "save",
-                "select": "all",
-                "data": res_vllms[3]
-            }
+# test_call_save_vllm4 = {
+#                 "db_name": REDIS_DB_VLLM,
+#                 "method": "save",
+#                 "select": "all",
+#                 "data": res_vllms[3]
+#             }
 
-test_call_save_vllm5 = {
-                "db_name": REDIS_DB_VLLM,
-                "method": "save",
-                "select": "all",
-                "data": res_vllms[4]
-            }
+# test_call_save_vllm5 = {
+#                 "db_name": REDIS_DB_VLLM,
+#                 "method": "save",
+#                 "select": "all",
+#                 "data": res_vllms[4]
+#             }
 
 test_call_save = {
                 "db_name": REDIS_DB_VLLM,
