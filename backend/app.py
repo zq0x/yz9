@@ -977,75 +977,113 @@ async def fnredis(request: Request):
             print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running[0]["Name"]: {docker_container_list_vllm_running[0]["Name"]}')
             logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running[0]["Name"]: {docker_container_list_vllm_running[0]["Name"]}')
             
+                                    
+                            
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] found len(docker_container_list_vllm_running): {len(docker_container_list_vllm_running)}')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] found len(docker_container_list_vllm_running): {len(docker_container_list_vllm_running)}')
+            
+            
+            res_vllms = []
+            
+            for container in docker_container_list_vllm_running:
+                print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] container: {container}')
+                logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] container: {container}')
+                current_vllm = {
+                    "container_name": container["Name"],
+                    "uid": "123123",
+                    "status": "running",
+                    "State": {
+                        "Status": "running"
+                    },
+                    "gpu": {
+                        "mem": "ok%"
+                    },
+                    "ts": "0"
+                }
+                res_vllms.append(current_vllm)
+                print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] appended!')
+                logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] appended!')
+            
+        
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] returning res_vllms ({len(res_vllms)})')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] returning res_vllms ({len(res_vllms)})')
+        
+                        
+        
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] returning res_vllms {res_vllms}')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] returning res_vllms {res_vllms}')
+        
+            
+            return JSONResponse({"result_status": 200, "result_data": res_vllms})
             
             
             
-            vllm1 = {
-                "container_name": docker_container_list_vllm_running[0]["Name"],
-                "uid": "123123",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
+            # vllm1 = {
+            #     "container_name": docker_container_list_vllm_running[0]["Name"],
+            #     "uid": "123123",
+            #     "status": "running",
+            #     "State": {
+            #         "Status": "running"
+            #     },
+            #     "gpu": {
+            #         "mem": "ok%"
+            #     },
+            #     "ts": "0"
+            # }
 
-            vllm2 = {
-                "container_name": "vllm2",
-                "uid": "42124124",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
+            # vllm2 = {
+            #     "container_name": "vllm2",
+            #     "uid": "42124124",
+            #     "status": "running",
+            #     "State": {
+            #         "Status": "running"
+            #     },
+            #     "gpu": {
+            #         "mem": "ok%"
+            #     },
+            #     "ts": "0"
+            # }
 
-            vllm3 = {
-                "container_name": "vllm3",
-                "uid": "523235235",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
+            # vllm3 = {
+            #     "container_name": "vllm3",
+            #     "uid": "523235235",
+            #     "status": "running",
+            #     "State": {
+            #         "Status": "running"
+            #     },
+            #     "gpu": {
+            #         "mem": "ok%"
+            #     },
+            #     "ts": "0"
+            # }
 
-            vllm4 = {
-                "container_name": "vllm4",
-                "uid": "52352352",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
+            # vllm4 = {
+            #     "container_name": "vllm4",
+            #     "uid": "52352352",
+            #     "status": "running",
+            #     "State": {
+            #         "Status": "running"
+            #     },
+            #     "gpu": {
+            #         "mem": "ok%"
+            #     },
+            #     "ts": "0"
+            # }
 
-            vllm5 = {
-                "container_name": "vllm5",
-                "uid": "74545",
-                "status": "running",
-                "State": {
-                    "Status": "running"
-                },
-                "gpu": {
-                    "mem": "ok%"
-                },
-                "ts": "0"
-            }
-            res_data = [vllm1,vllm2,vllm3,vllm4,vllm5]
-            return JSONResponse({"result_status": 200, "result_data": res_data})
+            # vllm5 = {
+            #     "container_name": "vllm5",
+            #     "uid": "74545",
+            #     "status": "running",
+            #     "State": {
+            #         "Status": "running"
+            #     },
+            #     "gpu": {
+            #         "mem": "ok%"
+            #     },
+            #     "ts": "0"
+            # }
+            # res_data = [vllm1,vllm2,vllm3,vllm4,vllm5]
+            # return JSONResponse({"result_status": 200, "result_data": res_data})
   
         if req_data["method"] == "vllm":
             
