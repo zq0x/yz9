@@ -991,9 +991,9 @@ async def fnredis(request: Request):
                 current_vllm = {
                     "container_name": container["Name"],
                     "uid": container["Id"][:12],
-                    "status": "running",
+                    "status": container["State"]["Status"],
                     "State": {
-                        "Status": "running"
+                        "Status": container["State"]["Status"]
                     },
                     "gpu": {
                         "mem": "ok%"

@@ -1106,8 +1106,10 @@ def gpu_to_pd():
             MEM_TOTAL = float(MEM_TOTAL) + float(current_gpu_mem_total.split()[0])
             MEM_USED = float(MEM_USED) + float(current_gpu_mem_used.split()[0])
             MEM_FREE = float(MEM_FREE) + float(current_gpu_mem_free.split()[0])
-
-            
+            print(f'MMMMMMMMMMMMMMMMM MEM 1')
+            update_mem(gpu_info.get("mem_util", "0"))
+            print(f'MMMMMMMMMMMMMMMMM MEM 2')
+            # mmmmmmmm
             rows.append({                                
                 "name": gpu_info.get("name", "0"),
                 "mem_util": gpu_info.get("mem_util", "0"),
@@ -1215,8 +1217,31 @@ def redis_connection(**kwargs):
                 for entry in [json.dumps(entry) for entry in res_db_list]:
                     r.lrem(kwargs["db_name"], 0, entry)
                     entry = json.loads(entry)
+                    entry["ts"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    # entry["gpu"]["mem"] = f'blablabla + {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
+                    r.rpush(kwargs["db_name"], json.dumps(entry))
+                    update_i = update_i + 1
+                # print(f' **REDIS: updated ({update_i}/{len(res_db_list)})!')
+                return res_db_list
+            else:
+                print(f' **REDIS: Error: no entry to update for db_name: {kwargs["db_name"]}')
+                return False
+                    
+        if kwargs["method"] == "update2":
+            print(f' ********************REDIS: "update2"')
+            if not kwargs["update_val"]:
+                print(f' ********************REDIS: ERROR NO "update_val"')
+                return False
+            else:
+                print(f' ********************REDIS: SUCCES GOT "update_val": {kwargs["update_val"]}')
+            
+            if len(res_db_list) > 0:
+                update_i = 0
+                for entry in [json.dumps(entry) for entry in res_db_list]:
+                    r.lrem(kwargs["db_name"], 0, entry)
+                    entry = json.loads(entry)
                     # entry["ts"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    entry["gpu"]["mem"] = f'blablabla + {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
+                    entry["gpu"]["mem"] = f'mmhhmm {kwargs["update_val"]} |||| {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
                     r.rpush(kwargs["db_name"], json.dumps(entry))
                     update_i = update_i + 1
                 # print(f' **REDIS: updated ({update_i}/{len(res_db_list)})!')
@@ -1319,6 +1344,7 @@ test_call_update = {
             }
 
 
+
 test_call_update_gpu = {
                 "db_name": REDIS_DB_VLLM,
                 "method": "update",
@@ -1335,6 +1361,9 @@ test_call_update_all = {
                 "method": "update",
                 "select": "all"
             }
+
+
+
 
 
 
@@ -1520,6 +1549,20 @@ def get_vllms_list():
 
 def update_vllms_list():
     res_redis = redis_connection(**test_call_update)
+    return res_redis
+
+    
+def update_mem(new_mem):
+    test_call_update2 = {
+                "db_name": REDIS_DB_VLLM,
+                "method": "update",
+                "select": "all",
+                "filter_key": "id",
+                "filter_val": "3",
+                "update_val": new_mem
+                
+            }
+    res_redis = redis_connection(**test_call_update2)
     return res_redis
 
     
