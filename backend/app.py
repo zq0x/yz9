@@ -986,8 +986,8 @@ async def fnredis(request: Request):
             res_vllms = []
             
             for container in docker_container_list_vllm_running:
-                print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] container: {container}')
-                logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] container: {container}')
+                print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] container["Name"]: {container["Name"]}')
+                logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] container["Name"]: {container["Name"]}')
                 current_vllm = {
                     "container_name": container["Name"],
                     "uid": "123123",
