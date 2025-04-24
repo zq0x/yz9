@@ -126,6 +126,28 @@ llm_instance = None
 async def root():
     return 'Hello from audio server!'
 
+@app.post("/a")
+async def fnaudio2(request: Request):
+    try:
+        req_data = await request.json()
+        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [audio] req_data > {req_data}')
+        logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [audio] req_data > {req_data}')
+
+        if req_data["method"] == "status":
+            return JSONResponse({"result_status": 200, "result_data": f'ok'})
+
+        if req_data["method"] == "transcribe":
+            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [{req_data["method"]}] trying to transcribe ...')
+            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] [{req_data["method"]}] trying to transcribe ...')
+            res_transcribe = transcribe_audio(req_data["audio_model"],req_data["audio_path"],req_data["device"],req_data["compute_type"])
+            return JSONResponse({"result_status": 200, "result_data": f'{res_transcribe}'})
+
+
+    except Exception as e:
+        print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] {e}')
+        return JSONResponse({"result_status": 500, "result_data": f'{e}'})
+
+
 @app.post("/t")
 async def fnaudio(request: Request):
     try:

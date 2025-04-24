@@ -1794,6 +1794,8 @@ class PromptValues:
 
 
 BACKEND_URL = f'http://container_backend:{os.getenv("BACKEND_PORT")}/docker'
+AUDIO_URL = f'http://container_audio:{os.getenv("AUDIO_PORT")}/a'
+# AUDIO_URL = f'http://container_audio:{os.getenv("AUDIO_PORT")}/t'
 
 
 def toggle_vllm_load_create(vllm_list):
@@ -2711,14 +2713,14 @@ def create_app():
         
         # aaaa
         
-        
+
         # Audio processing functions
         def process_audio(audio_path, audio_model, device, compute_type, action):
             try:
                 print(f'Processing audio with action: {action}')
                 logging.info(f'Processing audio with action: {action}')
                 
-                response = requests.post(BACKEND_URL, json={
+                response = requests.post(AUDIO_URL, json={
                     "method": "transcribe",
                     "audio_model": audio_model,
                     "audio_path": audio_path,
