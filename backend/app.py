@@ -963,13 +963,13 @@ async def fnredis(request: Request):
             docker_container_list_vllm_not_running = [c for c in res_container_list_attr if c["State"]["Status"] != "running" and c["Name"] not in [f'/container_redis',f'/container_backend', f'/container_frontend', f'/container_audio']]
             
                 
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running: {docker_container_list_vllm_running}')
-            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running: {docker_container_list_vllm_running}')
+            # print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running: {docker_container_list_vllm_running}')
+            # logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_running: {docker_container_list_vllm_running}')
             
             
                             
-            print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_not_running: {docker_container_list_vllm_not_running}')
-            logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_not_running: {docker_container_list_vllm_not_running}')
+            # print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_not_running: {docker_container_list_vllm_not_running}')
+            # logging.info(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] >>>> [redis] docker_container_list_vllm_not_running: {docker_container_list_vllm_not_running}')
             
             
                         
