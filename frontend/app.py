@@ -2220,10 +2220,10 @@ def create_app():
         app.load(get_vllm, outputs=[vllm_state])
         app.load(get_container, outputs=[container_state])
         
-        txt_lambda_log_helper = gr.Textbox(value="logs")
-        txt_lambda_start_helper = gr.Textbox(value="start")
-        txt_lambda_stop_helper = gr.Textbox(value="stop")
-        txt_lambda_delete_helper = gr.Textbox(value="delete")
+        txt_lambda_log_helper = gr.Textbox(value="logs", visible=False)
+        txt_lambda_start_helper = gr.Textbox(value="start", visible=False)
+        txt_lambda_stop_helper = gr.Textbox(value="stop", visible=False)
+        txt_lambda_delete_helper = gr.Textbox(value="delete", visible=False)
         
         @gr.render(inputs=[container_state])
         def render_container(container_list):
