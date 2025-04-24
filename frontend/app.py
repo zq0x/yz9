@@ -2127,6 +2127,75 @@ def create_app():
     with gr.Blocks() as app:
         
         
+        
+        
+
+
+        gr.Markdown(
+        """
+        # Welcome!
+        Select a Hugging Face model and deploy it on a port
+        # Hallo!
+        Testen Sie LLM AI Models auf verschiedenen Ports mit custom vLLM images
+        **Note**: _[vLLM supported models list](https://docs.vllm.ai/en/latest/models/supported_models.html)_        
+        """)
+        input_search = gr.Textbox(placeholder="Enter Hugging Face model name or tag", label=f'found 0 models', show_label=False, autofocus=True)
+        btn_search = gr.Button("Search")
+        btn_tested_models = gr.Button("Load tested models")
+        
+
+
+
+
+
+
+
+
+
+
+        with gr.Row(visible=False) as row_model_select:
+            model_dropdown = gr.Dropdown(choices=[''], interactive=True, show_label=False)
+        with gr.Row(visible=False) as row_model_info:
+            with gr.Column(scale=4):
+                with gr.Accordion(("Model Parameters"), open=False):
+                    with gr.Row():
+                        selected_model_id = gr.Textbox(label="id")
+                        selected_model_container_name = gr.Textbox(label="container_name")
+                        
+                        
+                    with gr.Row():
+                        selected_model_architectures = gr.Textbox(label="architectures")
+                        selected_model_pipeline_tag = gr.Textbox(label="pipeline_tag")
+                        selected_model_transformers = gr.Textbox(label="transformers")
+                        
+                        
+                    with gr.Row():
+                        selected_model_model_type = gr.Textbox(label="model_type")
+                        selected_model_quantization = gr.Textbox(label="quantization")
+                        selected_model_torch_dtype = gr.Textbox(label="torch_dtype")
+                        selected_model_size = gr.Textbox(label="size")
+                        selected_model_hidden_size = gr.Textbox(label="hidden_size", visible=False)
+
+                    with gr.Row():
+                        selected_model_private = gr.Textbox(label="private")
+                        selected_model_gated = gr.Textbox(label="gated")
+                        selected_model_downloads = gr.Textbox(label="downloads")
+                                          
+                        
+                        
+                    
+                    with gr.Accordion(("Model Configs"), open=False):
+                        with gr.Row():
+                            selected_model_search_data = gr.Textbox(label="search_data", lines=20, elem_classes="table-cell")
+                        with gr.Row():
+                            selected_model_hf_data = gr.Textbox(label="hf_data", lines=20, elem_classes="table-cell")
+                        with gr.Row():
+                            selected_model_config_data = gr.Textbox(label="config_data", lines=20, elem_classes="table-cell")
+                        
+        
+        
+        
+        
         vllm_state = gr.State([])
         container_state = gr.State(value=[])
 
@@ -2531,72 +2600,6 @@ def create_app():
 
 
 
-
-        gr.Markdown(
-        """
-        # Welcome!
-        Select a Hugging Face model and deploy it on a port
-        # Hallo!
-        Testen Sie LLM AI Models auf verschiedenen Ports mit custom vLLM images
-        **Note**: _[vLLM supported models list](https://docs.vllm.ai/en/latest/models/supported_models.html)_        
-        """)
-        input_search = gr.Textbox(placeholder="Enter Hugging Face model name or tag", label=f'found 0 models', show_label=False, autofocus=True)
-        btn_search = gr.Button("Search")
-        btn_tested_models = gr.Button("Load tested models")
-        
-
-
-
-
-
-
-
-
-
-
-        with gr.Row(visible=False) as row_model_select:
-            model_dropdown = gr.Dropdown(choices=[''], interactive=True, show_label=False)
-        with gr.Row(visible=False) as row_model_info:
-            with gr.Column(scale=4):
-                with gr.Accordion(("Model Parameters"), open=False):
-                    with gr.Row():
-                        selected_model_id = gr.Textbox(label="id")
-                        selected_model_container_name = gr.Textbox(label="container_name")
-                        
-                        
-                    with gr.Row():
-                        selected_model_architectures = gr.Textbox(label="architectures")
-                        selected_model_pipeline_tag = gr.Textbox(label="pipeline_tag")
-                        selected_model_transformers = gr.Textbox(label="transformers")
-                        
-                        
-                    with gr.Row():
-                        selected_model_model_type = gr.Textbox(label="model_type")
-                        selected_model_quantization = gr.Textbox(label="quantization")
-                        selected_model_torch_dtype = gr.Textbox(label="torch_dtype")
-                        selected_model_size = gr.Textbox(label="size")
-                        selected_model_hidden_size = gr.Textbox(label="hidden_size", visible=False)
-
-                    with gr.Row():
-                        selected_model_private = gr.Textbox(label="private")
-                        selected_model_gated = gr.Textbox(label="gated")
-                        selected_model_downloads = gr.Textbox(label="downloads")
-                                          
-                        
-                        
-                    
-                    with gr.Accordion(("Model Configs"), open=False):
-                        with gr.Row():
-                            selected_model_search_data = gr.Textbox(label="search_data", lines=20, elem_classes="table-cell")
-                        with gr.Row():
-                            selected_model_hf_data = gr.Textbox(label="hf_data", lines=20, elem_classes="table-cell")
-                        with gr.Row():
-                            selected_model_config_data = gr.Textbox(label="config_data", lines=20, elem_classes="table-cell")
-                        
-        
-        
-        
-        vllms=gr.Radio(["vLLM1", "vLLM2", "Create New"], value="vLLM1", show_label=False, info="Select a vLLM or create a new one. Where?")
         current_tab = gr.Number(value=0, visible=False)
         with gr.Tabs() as tabs:
             with gr.TabItem("Download", id=0):
@@ -3249,12 +3252,6 @@ def create_app():
             [output_prompt]
         )
 
-
-        vllms.change(
-            toggle_vllm_load_create,
-            vllms,
-            [acc_load, vllm_load_actions, acc_create, vllm_create_actions]
-        )
 
         
         
